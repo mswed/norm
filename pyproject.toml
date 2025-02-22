@@ -1,0 +1,36 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "norm"
+version = "0.1.0"
+authors = [
+    { name="Moshe Swed", email="mswed@beapot.com" },
+]
+description = "An ORM for Shotgrid"
+readme = "README.md"
+requires-python = ">=3.9"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "sgtk==0.21.7",
+    "termcolor==2.5.0",
+]
+[project.optional-dependencies]
+dev = [
+    "pytest==8.3.4",
+    "pytest-sugar==1.0.0",
+]
+[project.urls]
+"Homepage" = "https://github.com/mswed/norm"
+"Bug Tracker" = "https://github.com/mswed/norm/issues"
+
+[tool.pytest.ini_options]
+addopts = "-ra -q"
+testpaths = [
+    "tests",
+]
