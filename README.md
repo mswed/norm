@@ -50,7 +50,7 @@ shot['description']
 # The Norm way
 shot = Shot.query.by_id(123456)
 shot.description.get()
->> 'RND_OUT_006_020'
+>> 'HSM_SATL_0030'
 ```
 
 Here is a script that first finds a shot (we'll need some data from it) and then finds all the cameras attached to a project (we'll need their info as well)
@@ -156,14 +156,14 @@ We already have the shot, so getting the shot name is as simple as
 
 ```python
 shot.bingo.get()
->>> 'RND_OUT_006_020'
+>>> 'HSM_SATL_0030'
 ```
 
 Let's find out who's assigned to the task:
 
 ```python
 user = task.task_assignees[0]
->>> [<HUMANUSER: Stephen Mann>]
+>>> [<HUMANUSER: Moshe Swed>]
 ```
 
 And now get their department
