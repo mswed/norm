@@ -13,11 +13,11 @@ Norm gives you a Python class representation of a Shotgrid record instead of a d
 ```python
 # The old way
 shot['description']
->> 'RND_OUT_006_020'
+>> 'HSM_SATL_0030'
 
 # The Norm way
 shot.description.get()
->> 'RND_OUT_006_020'
+>> 'HSM_SATL_0030'
 ```
 
 Instead of intersecting directly with the api or the dictionaries you can use the class to get, set and delete data using the class.
@@ -26,10 +26,10 @@ This also means that we can have specific methods attached to entities. For exam
 
 ```python
 logs = TimeLog.repeating_log(description='A meeting',
-							 start_date='2024-02-26',
-							 start_time='10:30',
-							 end_time='11:00',
-							 project_id=7,
+                             start_date='2024-02-26',
+                             start_time='10:30',
+                             end_time='11:00',
+                             project_id=7,
                              task_id=30,
                              repetitions=5)
 ```
