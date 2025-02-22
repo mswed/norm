@@ -20,7 +20,7 @@ shot.description.get()
 >> 'HSM_SATL_0030'
 ```
 
-Instead of intersecting directly with the api or the dictionaries you can use the class to get, set and delete data using the class.
+Instead of interacting directly with the api or the dictionaries you can use the class to get, set and delete data using the class.
 
 This also means that we can have specific methods attached to entities. For example, if you'd like to create a bunch of time logs (you know those endless meetings?), you can do this:
 
@@ -34,7 +34,7 @@ logs = TimeLog.repeating_log(description='A meeting',
                              repetitions=5)
 ```
 
-You now have a `Production meeting` for each day of the week.
+You now have a `A meeting` entry for each day of the week.
 
 ## He knows you're lazy
 
@@ -45,7 +45,7 @@ Norm runs searches with less code and fetches all of the fields a record has wit
 shot = sg.find_one('Shot', [['id', 'is', 123456]], ['description', 'sg_status_list'])
 
 shot['description']
->> 'RND_OUT_006_020'
+>> 'HSM_SATL_0030'
 
 # The Norm way
 shot = Shot.query.by_id(123456)
