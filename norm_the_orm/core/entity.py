@@ -1,5 +1,6 @@
 import os
 import logging
+from typing import Optional
 
 from .registry import EntityRegistry
 from ..session import Session
@@ -36,13 +37,18 @@ class Entity:
         return cls(entity_type, fields_info.attrs, data={})
 
     @classmethod
-    def from_id(cls, entity_type, entity_id):
+    def from_id(cls, entity_id, entity_type: Optional[str] = None):
         """
         Create an Entity from an SG Entity ID
         @param entity_type: str, type of entity to create
         @param entity_id: int, SG entity ID
         @return: Instance(Entity), a class representing the SG entity
         """
+
+        if entity_type is None:
+            entity_type = cls.__entity_type__
+        if not entity_type:
+            raise NormException('No entity type has been provided!')
 
         log.debug(f'Creating record from ID {entity_type}, {entity_id}')
 
@@ -54,7 +60,7 @@ class Entity:
         fields = fields_info.names
         filters = [['id', 'is', entity_id]]
         results = Session.current.db.api.find_one(entity_type, filters, fields)
-        log.debug(f'Found records on ShotGrid {results}')
+        # log.debug(f'Found records on ShotGrid {results}')
         entity = EntityRegistry.get(entity_type, cls)
         return entity(entity_type, fields_info.attrs, results)
 
@@ -455,6 +461,7 @@ class Field:
         self.entity.log.debug(f'VALUE TO ORM: Converting {self} to an Entity')
         if self.value:
             log.debug(f'Value to convert is {value}')
+            log.debug(f'Current entities {Session.current.entities}')
             try:
                 # Search our entities list to see if we already converted this entity before
                 entity = [
@@ -464,8 +471,9 @@ class Field:
                 ][0]
                 self.entity.log.debug(f'No need to convert, we already converted before: {entity}')
             except IndexError:
+                self.entity.log.debug('Entity was not found in session entities, creating it now')
                 # We did not find an entity object, convert the value
-                entity = Entity.from_id(value.get('type'), value.get('id'))
+                entity = Entity.from_id(entity_type=value.get('type'), entity_id=value.get('id'))
                 self.entity.log.debug('We converted based on the id')
             except AttributeError:
                 self.entity.log.debug('Failed to convert')

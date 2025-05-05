@@ -1,5 +1,7 @@
 from datetime import date, datetime, timedelta
 
+from .project import Project
+from .task import Task
 from ..core.entity import Entity
 from ..core.registry import register_entity
 from ..exceptions import NormException
@@ -30,8 +32,8 @@ class TimeLog(Entity):
         else:
             raise NormException('Please provide an end date or number of repetitions!')
 
-        project = Entity.from_id('Project', project_id)
-        task = Entity.from_id('Task', task_id)
+        project = Project.from_id('Project', project_id)
+        task = Task.from_id('Task', task_id)
 
         logs = []
         for day in cls.date_range(start_date, end_date):
