@@ -1,39 +1,23 @@
-import logging
+import sys
+import os
+from loguru import logger
 
 
-class Logger:
-    def __init__(self, name, log_file='app.log', log_level=logging.DEBUG):
-        self.logger = logging.getLogger(name)
-        self.logger.setLevel(log_level)
+# Configure loguru
+# Remove default handler
+logger.remove()
 
-        # Create file handler
-        # file_handler = logging.FileHandler(log_file)
-        # file_handler.setLevel(log_level)
+log_level = os.environ.get('LOGLEVEL', 'DEBUG')
 
-        # Create console handler
-        console_handler = logging.StreamHandler()
-        console_handler.setLevel(log_level)
+# Add a console handler with custom format
+logger.add(
+    sink=sys.stderr,
+    format='<green>{time:YYYY-MM-DD HH:mm:ss}</green> | <level>{level: <8}</level> | <cyan>{name}</cyan>:<cyan>{function}</cyan>:<cyan>{line}</cyan> - <level>{message}</level>',
+    level=log_level,
+)
 
-        # Create formatter
-        formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-        # file_handler.setFormatter(formatter)
-        console_handler.setFormatter(formatter)
 
-        # Add handlers to logger
-        # self.logger.addHandler(file_handler)
-        self.logger.addHandler(console_handler)
-
-    def debug(self, message):
-        self.logger.debug(message)
-
-    def info(self, message):
-        self.logger.info(message)
-
-    def warning(self, message):
-        self.logger.warning(message)
-
-    def error(self, message):
-        self.logger.error(message)
-
-    def critical(self, message):
-        self.logger.critical(message)
+# Function to get a contextualized logger
+def get_logger(name):
+    """Returns a logger with the provided context name."""
+    return logger.bind(name=name)

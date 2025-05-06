@@ -14,4 +14,8 @@ class Shot(Entity):
         """
         Get all tasks from a specific pipeline step
         """
-        pass
+        tasks = self.tasks.get()
+
+        filtered_tasks = [t for t in tasks if t.step and t.step.bingo.get().lower() == step.lower()]
+
+        return filtered_tasks

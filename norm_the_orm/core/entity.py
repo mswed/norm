@@ -1,14 +1,12 @@
-import os
-import logging
 from typing import Optional
 
 from .registry import EntityRegistry
 from ..session import Session
 from .. import search
 from ..exceptions import NormException
+from ..utils import get_logger
 
-logging.basicConfig(level=os.environ.get('LOGLEVEL', 'INFO'))
-log = logging.getLogger(__name__)
+log = get_logger('entity')
 
 
 class classproperty(property):
@@ -50,17 +48,18 @@ class Entity:
         if not entity_type:
             raise NormException('No entity type has been provided!')
 
-        log.debug(f'Creating record from ID {entity_type}, {entity_id}')
+        log.debug(f'Creating record from ID {entity_id} ({entity_type}) ')
 
         if Session.current is None:
             Session.new()
 
         # Get all the fields data
         fields_info = Session.current.get_entity_fields(entity_type)  # Query SG
+        log.debug(f'Field info {fields_info}')
         fields = fields_info.names
         filters = [['id', 'is', entity_id]]
         results = Session.current.db.api.find_one(entity_type, filters, fields)
-        # log.debug(f'Found records on ShotGrid {results}')
+        log.debug(f'Found records on ShotGrid {results}')
         entity = EntityRegistry.get(entity_type, cls)
         return entity(entity_type, fields_info.attrs, results)
 
@@ -138,19 +137,19 @@ class Entity:
         return obj
 
     def __repr__(self):
-        shot_name = False
+        entity_name = False
         try:
-            shot_name = self.bingo.get()
+            entity_name = self.bingo.get()
         except AttributeError:
             pass
 
-        if not shot_name:
-            shot_name = 'Uninitialized'
+        if not entity_name:
+            entity_name = 'Uninitialized'
 
         if self.__nameoverride__ is None:
-            return f'<{self.entity_type.title()}: {shot_name}>'
+            return f'<{self.entity_type.title()}: {entity_name}>'
         else:
-            return f'<{self.__nameoverride__.title()} ({self.__nameoverride__}): {shot_name}>'
+            return f'<{self.__nameoverride__.title()} ({self.__nameoverride__}) name={entity_name} id={self.id.get()}>'
 
     @property
     def bingo(self):

@@ -4,7 +4,7 @@ import os
 from pprint import pprint
 import time
 from .exceptions import CommitError
-from .utils import Logger
+from .utils import get_logger
 from shotgrid_flow import Flow
 
 
@@ -22,7 +22,7 @@ class Session:
         self.schema = self.load_schema()
 
         logging.basicConfig(level=os.environ.get('LOGLEVEL', 'DEBUG'))
-        self.log = Logger('Session')
+        self.log = get_logger('Session')
 
         # We collect all entities created in the session, so we don't create them twice
         self.entities = []
