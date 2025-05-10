@@ -10,16 +10,25 @@ MOCK_DATA = {
                 {'type': 'Task', 'id': 457, 'name': 'comp'},
             ],
             'project': {'type': 'Project', 'id': 101, 'name': 'A Fake Project'},
-        }
+        },
+        29339: {
+            'code': 'ABC_050_030',
+            'sg_head_in': 1010,
+            'created_by': {'type': 'HumanUser', 'id': 123, 'name': 'Bob Robertson'},
+            'tasks': [
+                {'type': 'Task', 'id': 657, 'name': 'comp'},
+            ],
+            'project': {'type': 'Project', 'id': 101, 'name': 'A Fake Project'},
+        },
     },
     'HumanUser': {123: {'name': 'Bob Robertson', 'email': 'b.robertson@studio.com'}},
     'Task': {
         456: {'content': 'anim', 'entity': {'type': 'Shot', 'id': 29338, 'name': 'ABC_030_010'}},
         457: {'content': 'comp', 'entity': {'type': 'Shot', 'id': 29338, 'name': 'ABC_030_010'}},
+        657: {'content': 'comp', 'entity': {'type': 'Shot', 'id': 29339, 'name': 'ABC_050_030'}},
     },
     'Project': {101: {'name': 'A Fake Project', 'code': 'FPR'}},
 }
-
 # Mock schema data (May want to replace it with the full schema from SG)
 MOCK_SCHEMA = {
     'Shot': {
